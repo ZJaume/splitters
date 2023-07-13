@@ -1,3 +1,8 @@
+# Rust ignores
+rust/target
+rust/debug
+rust/Cargo.lock
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
