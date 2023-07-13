@@ -9,7 +9,7 @@ name = "splitters"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.18.3"
+pyo3 = "0.19.1"
 srx = { version = "0.1", features = ["from_xml"] }
 clap = { version = "3.1.18", features = ["derive"] }
 

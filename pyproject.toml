@@ -13,6 +13,9 @@ classifiers = [
 
 
 [tool.maturin]
-features = ["pyo3/extension-module"]
+# extension-module disables linking,
+# therefore, running Python code in Rust, fails to compile
+#features = ["pyo3/extension-module"]
+features = ["pyo3/auto-initialize"]
 bindings = "bin"
 #data = "./data"

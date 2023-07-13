@@ -4,9 +4,10 @@ use std::io::LineWriter;
 use std::io::{self, BufRead};
 use std::path::Path;
 use std::str::FromStr;
-use std::env::current_exe;
+use std::env;
 use srx::SRX;
 use clap::Parser;
+use pyo3::prelude::*;
 
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -24,14 +25,19 @@ struct Args {
     verbose: bool,
 }
 
-// Check if the srx files exist in the environment
-fn exist_srxfiles() -> bool {
-    let datapathname = format!(
-        "{}/../lib/python3.9/site-packages/splitters/data",
-        current_exe().unwrap().display()
-    );
-    let datapath = Path::new(datapathname.as_str());
-    datapath.exists()
+// Call python interpreter and obtain python path of our module
+fn pythonpath() -> PyResult<String> {
+    let mut path = String::new();
+    Python::with_gil(|py| {
+        // Instead of hardcoding the module name, obtain it from the crate name at compile time
+        let module = PyModule::import(py, env!("CARGO_PKG_NAME"))?;
+        let paths: Vec<&str> = module
+            .getattr("__path__")?
+            .extract()?;
+        // __path__ attribute returns a list of paths, return first
+        path.push_str(paths[0]);
+        Ok(path)
+    })
 }
 
 // Choose best rule for each language according to benchmark:
@@ -57,8 +63,24 @@ fn choose_srx(lang: &str) -> &str {
 
 fn main() -> io::Result<()> {
     let args = Args::parse();
-    if args.srxfile.is_empty() && exist_srxfiles() {
-        println!("{}", current_exe()?.display());
+    let mut srxfile = String::new();
+    println!("{}", pythonpath().unwrap());
+    if args.srxfile.is_empty() {
+        srxfile.push_str(
+            format!(
+                "{}/data/{}",
+                pythonpath().unwrap().as_str(),
+                choose_srx(args.language.as_str()),
+            ).as_str()
+        );
+        if !Path::new(&srxfile).exists() {
+            panic!(
+                "SRX file could not be found in '{}'. Please provide one with '-s'.",
+                srxfile,
+            );
+        }
+    } else {
+        srxfile.push_str(args.srxfile.as_str());
     }
 
     // Prepare output file to be written segment by segment
@@ -66,7 +88,7 @@ fn main() -> io::Result<()> {
     let mut file = LineWriter::new(file);
     // Load SRX rules from file
     let srx =
-        SRX::from_str(&read_to_string(args.srxfile).expect("rules file exists"))
+        SRX::from_str(&read_to_string(srxfile).expect("rules file exists"))
             .expect("srx rule file is valid");
     if args.verbose {
         println!("SRX rules errors while parsing with regex, by language:");
