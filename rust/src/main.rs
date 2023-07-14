@@ -64,11 +64,13 @@ fn choose_srx(lang: &str) -> &str {
 fn main() -> io::Result<()> {
     let args = Args::parse();
     let mut srxfile = String::new();
-    println!("{}", pythonpath().unwrap());
+
+    // If srx file is not provided, try to load one of the packaged srx files
     if args.srxfile.is_empty() {
         srxfile.push_str(
             format!(
                 "{}/data/{}",
+                // Obtain the path of the python package, where srx files are
                 pythonpath().unwrap().as_str(),
                 choose_srx(args.language.as_str()),
             ).as_str()
@@ -88,20 +90,21 @@ fn main() -> io::Result<()> {
     let mut file = LineWriter::new(file);
     // Load SRX rules from file
     let srx =
-        SRX::from_str(&read_to_string(srxfile).expect("rules file exists"))
+        SRX::from_str(&read_to_string(srxfile.clone()).expect("rules file exists"))
             .expect("srx rule file is valid");
     if args.verbose {
-        println!("SRX rules errors while parsing with regex, by language:");
+        eprintln!("Loaded SRX file: {}", srxfile);
+        eprintln!("SRX rules errors while parsing with regex, by language:");
         for (k, v) in srx.errors(){
-            println!("{:?}:", k);
+            eprintln!("{:?}:", k);
             for i in v{
-                println!("{}", i);
+                eprintln!("{}", i);
             }
         }
     }
     let rules = srx.language_rules(args.language);
     if args.verbose {
-        println!("Using these rules for the selected language: {:?}", rules);
+        eprintln!("Using these rules for the selected language: {:?}", rules);
     }
 
     // Read each input file line (it could be a whole document)
