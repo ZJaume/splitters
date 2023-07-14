@@ -5,7 +5,7 @@ use std::io::{self, BufRead};
 use std::path::Path;
 use std::str::FromStr;
 use std::env;
-use srx::SRX;
+use srx::{Language, SRX};
 use clap::Parser;
 use pyo3::prelude::*;
 
@@ -95,9 +95,13 @@ fn main() -> io::Result<()> {
     if args.verbose {
         eprintln!("Loaded SRX file: {}", srxfile);
         eprintln!("SRX rules errors while parsing with regex, by language:");
-        for (k, v) in srx.errors(){
-            eprintln!("{:?}:", k);
-            for i in v{
+        // Print errors sorted by language name
+        let errors = srx.errors();
+        let mut langs: Vec<&Language> = errors.keys().collect();
+        langs.sort();
+        for lang in langs {
+            eprintln!("{:?}:", lang);
+            for i in errors.get(lang).unwrap().iter() {
                 eprintln!("{}", i);
             }
         }
