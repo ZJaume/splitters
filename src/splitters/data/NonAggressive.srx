@@ -4659,7 +4659,7 @@
 
         <rule break="yes">
           <beforebreak>\n</beforebreak>
-          <afterbreak> +</afterbreak>
+          <afterbreak>\ +</afterbreak>
         </rule>
       </languagerule>
 

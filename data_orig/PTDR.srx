@@ -215,6 +215,10 @@
           <beforebreak>pta\.</beforebreak>
           <afterbreak>\s</afterbreak>
         </rule>
+        <rule break="no">
+          <beforebreak>\sp\.</beforebreak>
+          <afterbreak>\s</afterbreak>
+        </rule>
       </languagerule>
 
       <!-- DE
@@ -1843,7 +1847,7 @@
           <afterbreak>\s</afterbreak>
         </rule>
         <rule break="no">
-          <beforebreak>p\.</beforebreak>
+          <beforebreak>\sp\.</beforebreak>
           <afterbreak>\s</afterbreak>
         </rule>
       </languagerule>
@@ -2042,6 +2046,10 @@
         </rule>
         <rule break="no">
           <beforebreak>a\. C\.</beforebreak>
+          <afterbreak>\s</afterbreak>
+        </rule>
+        <rule break="no">
+          <beforebreak>\sp\.</beforebreak>
           <afterbreak>\s</afterbreak>
         </rule>
       </languagerule>
@@ -4637,7 +4645,11 @@
         </rule>
         <rule break="no">
           <beforebreak>\.</beforebreak>
-          <afterbreak>\s+\p{N}</afterbreak>
+          <afterbreak>\s+\p{N}+[^\.\)\-]</afterbreak>
+        </rule>
+        <rule break="no">
+          <beforebreak>\.\s+\p{N}+\.</beforebreak>
+          <afterbreak>\s</afterbreak>
         </rule>
         <rule break="no">
           <!-- ... exception -->
@@ -4646,7 +4658,7 @@
         </rule>
         <rule break="yes">
           <!--numbered headers break rule 
-         based on an idea by Jean-Christophe Helary -->
+          based on an idea by Jean-Christophe Helary -->
           <beforebreak>^\s*\p{Nd}+[\p{Nd}\.\)\]]+</beforebreak>
           <afterbreak>\s+\p{Lu}</afterbreak>
         </rule>
@@ -4665,7 +4677,7 @@
 
         <rule break="yes">
           <beforebreak>\n</beforebreak>
-          <afterbreak>\ +</afterbreak>
+          <afterbreak> +</afterbreak>
         </rule>
       </languagerule>
 

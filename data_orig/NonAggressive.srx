@@ -20,10 +20,6 @@
           <afterbreak>\s</afterbreak>
         </rule>
         <rule break="no">
-          <beforebreak>p\. ex\.</beforebreak>
-          <afterbreak>\s</afterbreak>
-        </rule>
-        <rule break="no">
           <beforebreak>pàg\.</beforebreak>
           <afterbreak>\s</afterbreak>
         </rule>
@@ -1840,10 +1836,6 @@
         </rule>
         <rule break="no">
           <beforebreak>\s[vV][sS]?\.</beforebreak>
-          <afterbreak>\s</afterbreak>
-        </rule>
-        <rule break="no">
-          <beforebreak>p\.</beforebreak>
           <afterbreak>\s</afterbreak>
         </rule>
       </languagerule>
@@ -4632,14 +4624,6 @@
 
       <languagerule languagerulename="Default">
         <rule break="no">
-          <beforebreak>\.</beforebreak>
-          <afterbreak>\s+\p{Ll}</afterbreak>
-        </rule>
-        <rule break="no">
-          <beforebreak>\.</beforebreak>
-          <afterbreak>\s+\p{N}</afterbreak>
-        </rule>
-        <rule break="no">
           <!-- ... exception -->
           <beforebreak>\.\.\.</beforebreak>
           <afterbreak>\s+\P{Lu}</afterbreak>
@@ -4651,9 +4635,19 @@
           <afterbreak>\s+\p{Lu}</afterbreak>
         </rule>
         <rule break="yes">
-          <!-- .?! break rule -->
-          <beforebreak>[\.\?\!]+</beforebreak>
+          <!-- :;?! break rule -->
+          <beforebreak>[:;\.\?\!]+</beforebreak>
           <afterbreak>\s</afterbreak>
+        </rule>
+        <rule break="no">
+          <!-- no decimals with dot -->
+          <beforebreak>[^\d]+\.</beforebreak>
+          <afterbreak>[^\d]+</afterbreak>
+        </rule>
+        <rule break="no">
+          <!-- no decimals with comma -->
+          <beforebreak>[^\d]+\,</beforebreak>
+          <afterbreak>[^\d]+</afterbreak>
         </rule>
       </languagerule>
 
@@ -4665,7 +4659,7 @@
 
         <rule break="yes">
           <beforebreak>\n</beforebreak>
-          <afterbreak>\ +</afterbreak>
+          <afterbreak> +</afterbreak>
         </rule>
       </languagerule>
 
