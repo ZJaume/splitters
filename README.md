@@ -13,14 +13,31 @@ pip install ./splitters
 ```
 
 ## Usage
+Example usage
 ```bash
-echo "Yes this is a sentence. Another one." | splitters -i /dev/stdin --output /dev/stdout -l en
+echo "Yes this is a sentence. Another one." | splitters -i /dev/stdin --output /dev/stdout
 ```
 ```
 Yes this is a sentence.
 Another one.
 ```
 
+Full list of parameters:
+```
+splitters 0.1.0
+
+USAGE:
+    splitters [OPTIONS] --input <INPUT> --output <OUTPUT>
+
+OPTIONS:
+    -h, --help                   Print help information
+    -i, --input <INPUT>
+    -l, --language <LANGUAGE>    ISO-639-1, 2 char language code [default: en]
+    -o, --output <OUTPUT>
+    -s, --srxfile <SRXFILE>      [default: ]
+    -v, --verbose
+    -V, --version                Print version information
+```
 
 ## Compatibility with Rust regex
 Some regex expressions might not be loaded because of syntax incompatibilities with Rust regex engine.
