@@ -1,5 +1,26 @@
-# splitters
-SRX-based sentence splitter
+# splitte(.)rs
+*There's still some work pending to make this usable*
+
+A CLI for Rust [SRX](https://github.com/bminixhofer/srx) implementation as a Python package.
+
+## Installation
+Installing from source needs Rust Cargo to be installed. Install it with your package manager or with https://rustup.rs/.
+
+Then, clone the repo and install it as any other Python package:
+```
+git clone https://github.com/ZJaume/splitters
+pip install ./splitters
+```
+
+## Usage
+```bash
+echo "Yes this is a sentence. Another one." | splitters -i /dev/stdin --output /dev/stdout -l en
+```
+```
+Yes this is a sentence.
+Another one.
+```
+
 
 ## Compatibility with Rust regex
 Some regex expressions might not be loaded because of syntax incompatibilities with Rust regex engine.
